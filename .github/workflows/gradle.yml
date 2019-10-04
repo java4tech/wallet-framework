@@ -1,17 +1,26 @@
 name: Java CI
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+        java: [ '11', '12' ]
+      fail-fast: false
+    name: ${{ matrix.os }} JDK ${{ matrix.java }}
     steps:
     - uses: actions/checkout@v1
-    - name: Set up JDK 11
+    - name: Set up JDK
       uses: actions/setup-java@v1
       with:
-        java-version: 11
+        java-version: ${{ matrix.java }}
     - name: Build with Gradle
-      run: ./gradlew buildCI --stacktrace
+      run: ./gradlew -Ddownload.jpackage=true buildCI consensusj-netwallet-fx:jpackage --info --stacktrace
+    - name: Upload jpackage directory as artifact
+      uses: actions/upload-artifact@master
+      with:
+        name: consensusj-wallet-jdk${{ matrix.java }}-${{ matrix.os }}-jpackage
+        path: consensusj-netwallet-fx/build/jpackage

@@ -7,26 +7,17 @@ plugins {
     id 'org.javamodularity.moduleplugin' version "1.5.0"
 }
 
-repositories {
-    maven { url 'https://oss.sonatype.org/content/groups/public' }
-    maven { url 'https://jitpack.io' }
-}
-
 dependencies {
     implementation project(':airgaplib')
 
-    implementation "com.github.msgilligan:BridJ:msgilligan-master-SNAPSHOT"
+    implementation "com.github.consensusj:BridJ:consensusj-master-SNAPSHOT"
 
     implementation ("com.github.sarxos:webcam-capture:0.3.12") {
         exclude group: 'com.nativelibs4java', module: 'bridj'
     }
 
-    //implementation 'com.google.zxing:core:3.3.3'
-    //implementation 'com.google.zxing:javase:3.3.3'
-    implementation "com.github.msgilligan.zxing:core:msgilligan-modular-javase-SNAPSHOT"
-    implementation ("com.github.msgilligan.zxing:javase:msgilligan-modular-javase-SNAPSHOT") {
-        exclude group: 'com.github.msgilligan.zxing', module: 'core'
-    }
+    implementation 'com.google.zxing:core:3.4.0'
+    implementation 'com.google.zxing:javase:3.4.0'
 
     implementation "org.slf4j:slf4j-api:${slf4jVersion}"
     runtimeOnly "org.slf4j:slf4j-jdk14:${slf4jVersion}"
@@ -39,7 +30,7 @@ javafx {
 }
 
 application {
-    mainClassName = 'com.blockchaincommons.airgap.fx.demoapp.DemoQRScannerApplication'
+    mainClassName = 'org.consensusj.airgap.fx.demoapp.DemoQRScannerApplication'
 }
 
 task getDeps(type: Copy) {
