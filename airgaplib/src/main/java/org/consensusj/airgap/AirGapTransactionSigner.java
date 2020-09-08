@@ -11,7 +11,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.Coin;
-import org.bitcoinj.core.LegacyAddress;
 import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.core.Sha256Hash;
 import org.bitcoinj.core.Transaction;
@@ -99,6 +98,18 @@ public class AirGapTransactionSigner {
     }
 
     /**
+     * Create a signature response Json string (without display or confirmation) for a signing request Json string
+     *
+     * @param requestJsonString Request Json string
+     * @return Signed response Json string
+     */
+    public String signatureResponseFromSigningRequestJson(String requestJsonString) {
+        TransactionSigningRequest request = parseSigningRequestJson(requestJsonString);
+        TransactionSignatureResponse response = signatureResponseFromSigningRequest(request);
+        return serializeResponse(response);
+    }
+
+    /**
      * Create an {@code InputSignature} for transaction input
      *
      * @param txInput An input from a correctly signed bitcoinj transaction
@@ -139,10 +150,12 @@ public class AirGapTransactionSigner {
             TransactionOutPoint outPoint = new TransactionOutPoint(netParams,
                         input.getIndex(),
                         Sha256Hash.wrap(input.getTxHash()));
-            Address fromAddr = LegacyAddress.fromBase58(netParams, input.getSender());
+            Address fromAddr = Address.fromString(netParams, input.getSender());
             DeterministicKey fromKey = keyChain.findKeyFromPubHash(fromAddr.getHash());
             tx.addSignedInput(outPoint, ScriptBuilder.createOutputScript(fromAddr), fromKey);
         }
         return tx;
     }
+
+
 }

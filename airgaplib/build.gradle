@@ -1,31 +1,35 @@
 plugins {
-    id 'java'
-    id 'groovy'
     id 'java-library'
+    id 'groovy'
     id 'maven'
     id 'eclipse'
-    id 'org.javamodularity.moduleplugin' version "1.5.0"
+    id 'org.javamodularity.moduleplugin' version "1.7.0"
 }
 
-def jacksonVersion = '2.9.8'
-
-/*
- * TODO: This module should really be JDK 8 compatible, perhaps a multi-release jar
- * Currently the only feature we're using that requires 9 is the module header
+/**
+ * Java 9 compatibility (We may switch back to Java 8 for use on Android)
  */
 sourceCompatibility = 9
 targetCompatibility = 9
 
 dependencies {
     api "${bitcoinjGroup}:${bitcoinjArtifact}:${bitcoinjVersion}"
-
-    implementation 'com.google.guava:guava:27.1-android'
-
+    
     implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
     implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 
     implementation "org.slf4j:slf4j-api:${slf4jVersion}"
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile 'com.msgilligan:bitcoinj-dsl:0.4.0'
+    testCompile 'com.msgilligan:bitcoinj-dsl:0.5.0'
+}
+
+ext.moduleName = 'org.consensusj.airgap'
+
+jar {
+    inputs.property('moduleName', moduleName)
+    manifest {
+        attributes  'Automatic-Module-Name': moduleName,
+                'Implementation-Version': archiveVersion
+    }
 }

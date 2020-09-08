@@ -3,9 +3,11 @@ plugins {
     id 'java-library'
     id 'maven'
     id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.8'
-    id 'org.javamodularity.moduleplugin' version "1.5.0"
+    id 'org.openjfx.javafxplugin' version '0.0.9'
 }
+
+sourceCompatibility = 9
+targetCompatibility = 9
 
 dependencies {
     implementation project(':airgaplib')
@@ -26,6 +28,7 @@ dependencies {
 }
 
 javafx {
+    version = javaFxVersion
     modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.swing' ]
 }
 

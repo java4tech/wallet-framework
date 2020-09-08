@@ -2,9 +2,10 @@
 
 == Requirements
 
-* OpenJDK 11 or later
+* OpenJDK 11 or later (OpenJDK 14.0.2 or later is recommended)
 * DMG build/release is on macOS
-* Untested DEB build on CI
+* DEB build on CI (minimal testing)
+* Windows build on CI (no testing yet)
 
 == Main Release Process
 
@@ -13,12 +14,23 @@
 .. `gradle.properties`
 . Commit version bump and changelog.
 . Full build, test
-.. `./gradlew clean build airgapfx-wallet:jpackage`
+.. `./gradlew clean buildCI buildJPackages`
 . Tag: `git tag -a v0.x.y -m "Release 0.x.y"`
 . Push: `git push --tags origin master`
 . Publish DMG to S3
 . JAR artifacts are not published to Bintray, yet.
 
+
+== macOS signing and verification
+
+=== Verification
+
+See https://www.macissues.com/2015/11/06/how-to-verify-app-signatures-in-os-x/
+
+----
+codesign --verify --verbose </path/to/dot.app>
+spctl --assess --verbose </path/to/dot.app>
+----
 
 == Announcements
 

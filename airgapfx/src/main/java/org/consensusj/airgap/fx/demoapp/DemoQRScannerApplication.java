@@ -32,6 +32,7 @@ public class DemoQRScannerApplication extends Application {
     private static final Logger log = LoggerFactory.getLogger(DemoQRScannerApplication.class);
 
     private CameraService cameraService;
+    private Stage primaryStage;
 
     @Override
     public void init() {
@@ -42,7 +43,8 @@ public class DemoQRScannerApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        QrCaptureView captureView  = new QrCaptureView(cameraService, this::scanListener);
+        this.primaryStage = primaryStage;
+        QrCaptureView captureView  = new QrCaptureView(cameraService, this::scanListener, this::closeListener);
 
         Scene scene = new Scene(captureView);
         primaryStage.setScene(scene);
@@ -53,6 +55,11 @@ public class DemoQRScannerApplication extends Application {
         System.out.println("Result: " + result);
     }
 
+    private void closeListener(Object result) {
+        if (primaryStage != null) {
+            primaryStage.hide();
+        }
+    }
 
     public static void main(String[] args) {
         launch(args);

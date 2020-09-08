@@ -5,9 +5,9 @@ plugins {
     id 'org.beryx.jlink'                    version '2.17.3'
 }
 
-def appName = 'ConsensusJWallet'
-mainClassName = "netwalletfx.NetWalletFxApp"
-//mainClassName = "$moduleName/netwalletfx.NetWalletFxApp"
+def appName = 'ConsensusJSigningWallet'
+mainClassName = "signwalletfx.SignWalletFxApp"
+//mainClassName = "$moduleName/signwalletfx.SignWalletFxApp"
 
 sourceCompatibility = 11
 targetCompatibility = 11
